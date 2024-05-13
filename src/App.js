@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Routes, redirect } from 'react-router-dom'; 
+import { Route, Routes, redirect, Navigate } from 'react-router-dom'; 
 import { connect } from 'react-redux';
 
 import './App.css';
@@ -28,8 +28,6 @@ class App extends React.Component {
               ...snapShot.data()
             }
           });
-
-          console.log(this.state);
         });
       } 
       
@@ -48,9 +46,9 @@ class App extends React.Component {
         <Routes>
           <Route exact path='/' Component={HomePage} />
           <Route path='/shop' Component={ShopPage} />
-          <Route exact path='/signin' render= {() => 
+          <Route exact path='/signin' element= {
             this.props.currentUser ? (
-            <redirect to='/' />
+            <Navigate to='/' />
             ) : (
               <SignInAndSignUpPage />)} 
           />
