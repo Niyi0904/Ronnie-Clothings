@@ -1,6 +1,7 @@
 import React from 'react';
 import { Route, Routes, redirect, Navigate } from 'react-router-dom'; 
 import { connect } from 'react-redux';
+import { useEffect } from 'react';
 
 import './App.css';
 
@@ -11,13 +12,11 @@ import Header from './components/header/header.component';
 import { auth, createUserProfileDocument } from './firebase/firebase.utils';
 import { setCurrentUser } from './redux/user/user.actions';
 
-class App extends React.Component {
-  unsubscribeFromAuth = null;
+const App = ({currentUser, setCurrentUser}) => {
+  let unsubscribeFromAuth = null;
 
-  componentDidMount() {
-    const {setCurrentUser} = this.props;
-
-    this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
+  useEffect(() => {
+    unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
       if (userAuth) {
         const userRef = await createUserProfileDocument(userAuth);
 
@@ -29,17 +28,18 @@ class App extends React.Component {
             }
           });
         });
-      } 
+
+        console.log('user have signed in')
+      } else {
+        console.log('user is out')
+      }
       
         setCurrentUser(userAuth);
     });     
-  }
 
-  componentWillUnmount() {
-    this.unsubscribeFromAuth();
-  }
+    return unsubscribeFromAuth;
+  }, []);
 
-  render() {
     return (
       <div>
         <Header/>
@@ -47,16 +47,14 @@ class App extends React.Component {
           <Route exact path='/' Component={HomePage} />
           <Route path='/shop' Component={ShopPage} />
           <Route exact path='/signin' element= {
-            this.props.currentUser ? (
+            currentUser ? (
             <Navigate to='/' />
             ) : (
               <SignInAndSignUpPage />)} 
           />
         </Routes>
       </div>
-    );
-  }
-}
+    )};
 
 const mapSateToProps = ({user}) => ({
   currentUser: user.currentUser
