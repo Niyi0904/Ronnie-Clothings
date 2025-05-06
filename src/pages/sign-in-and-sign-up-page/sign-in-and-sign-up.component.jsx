@@ -5,9 +5,11 @@ import SignIn from '../../components/sign-in/sign-in.component';
 import SignUp from '../../components/sign-up/sign-up.component';
 
 const SignInAndSignUpPage = () => (
-  <div className='sign-in-and-sign-up'>
-    <SignIn />
-    <SignUp />
+  <div className='relative w-full flex justify-center'>
+    <div className='relative flex flex-col lg:flex-row items-center w-[85%] justify-between flex  mx-4'>
+      <SignIn />
+      <SignUp />
+    </div>
   </div>
 )
 

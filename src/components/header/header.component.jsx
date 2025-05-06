@@ -11,7 +11,7 @@ import CartIcon from '../cart-icon/cart-icon.component'
 import CartDropdown from '../cart-dropdown/cart-dropdown.component';
 
 const Header = ({ currentUser, hidden }) => (
-  <div className='header fixed top-0 left-0 w-full bg-white shadow z-50 w-full'>
+  <div className='header fixed top-0 left-0 w-full bg-white shadow z-50 w-full font-bold'>
     <Link className='logo-container' to="/">
       <Logo className='logo' />
     </Link>

@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { BsCart } from "react-icons/bs";
 
 import {toggleCartHidden} from '../../redux/cart/cart.action';
 
@@ -9,8 +10,8 @@ import { ReactComponent as ShoppingIcon} from '../../assets/crown.svg';
 
 const CartIcon = ({ toggleCartHiddens }) => (
   <div className="cart-icon" onClick={toggleCartHiddens}>
-    <ShoppingIcon className="shopping-icon"/>
-    <span className="item-count">0</span>
+    <BsCart className='text-3xl'/>
+    <span className="absolute text-md top-2.5">0</span>
   </div>
 );
 
