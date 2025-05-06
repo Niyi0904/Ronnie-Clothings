@@ -12,23 +12,23 @@ import CustomButton from '../custom-button/custom-button.component';
 
 // collection item function is the individual items which contains image, price, name, buttons
 const CollectionItem = ({item, addItem}) => {
-  const {id, name, price, imageUrl} = item;
+  const {id, title, name, price, image} = item;
   return (
-    <div className='collection-item'>
-      <div
-        className='image'
-        style={{
-          // setting the background to the item image 
-          backgroundImage: `url(${imageUrl})`
-        }}
+   <div className='flex flex-col xs:w-[87%] space-y-2'>
+    <div className='space-y-2 border rounded-2xl border-gray-400 pb-2'>
+      <img
+        src={image ? image : 'https://i.ibb.co/ypkgK0X/blue-beanie.png'}
+        className='h-80 w-[100%] rounded-t-2xl'
       />
-      <div className='collection-footer'>
-        <span className='name'> {name} </span>
-        <span className='price'> {price} </span>
+      <div className='flex font-semibold font-sans text-base justify-between mx-6 lg:mx-0'>
+        <span>{title ? title.split(" ").slice(0, 3).join(" ") : name.split(" ").slice(0, 3).join(" ")}</span>
+        <span>${price}</span>
       </div>
-      {/* Calling our addItem function onclick of our custom button */}
-      <CustomButton onClick={() => addItem(item)} > Add to cart</CustomButton>
-  </div>
+    </div>
+    <div className='flex justify-center'>
+      <button className='relative bg-black font-sans rounded-md text-white w-[40%] h-[5vh]' onClick={() => addItem(item)} > Add to cart</button>
+    </div>
+   </div>
 )};
 
 // Dispatching our action to redux store 

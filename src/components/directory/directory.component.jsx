@@ -1,59 +1,56 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import './directory.styles.scss';
 import MenuItem from '../menu-item/menu-item.component';
+import { Spinner } from '../../pages/shop/clothes/clothesPages';
 
-class Directory extends React.Component {
-  constructor() {
-    super();
+const Directory = () => {
+  const [items, setItems] = useState([]); // Fix: start with an empty array
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-    this.state = {
-      sections: [
-        {
-          title: 'hats',
-          imageUrl: 'https://i.ibb.co/cvpntL1/hats.png',
-          id: 1,
-          linkUrl: 'hats'
-        },
-        {
-          title: 'jackets',
-          imageUrl: 'https://i.ibb.co/px2tCc3/jackets.png',
-          id: 2,
-          linkUrl: 'shop/jackets'
-        },
-        {
-          title: 'sneakers',
-          imageUrl: 'https://i.ibb.co/0jqHpnp/sneakers.png',
-          id: 3,
-          linkUrl: 'shop/sneakers'
-        },
-        {
-          title: 'womens',
-          imageUrl: 'https://i.ibb.co/GCCdy8t/womens.png',
-          size: 'large',
-          id: 4,
-          linkUrl: 'shop/womens'
-        },
-        {
-          title: 'mens',
-          imageUrl: 'https://i.ibb.co/R70vBrQ/men.png',
-          size: 'large',
-          id: 5,
-          linkUrl: 'shop/mens'
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await fetch('https://api.escuelajs.co/api/v1/categories');
+
+        if (!response.ok) {
+          throw new Error('No data found');
         }
-      ]
-    }
-  }
 
-  render() {
-    return (
-      <div className='directory-menu'>
-        {this.state.sections.map(({id, ...otherSectionProps}) => (
-          <MenuItem key={id} {...otherSectionProps}/> 
-        ))}
-      </div>
-    )
-  }
+        const data = await response.json();
+        setItems(data);
+        console.log(data);
+      } catch (err) {
+        console.error(err);
+        setError(err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+
+    fetchCategories();
+  }, []); 
+
+  const filteredItem = items.filter(item => {
+    return item.id === 1 | item.id === 4 | item.id === 5
+  })
+
+  if (error) return <div>Error: {error.message}</div>;
+
+  return (
+    <div className='relative flex flex-col justify-center mt-12 w-full'>
+      <div className="text-4xl font-bold text-center px-4">Shop</div>
+      {isLoading ? <Spinner/> : 
+        <div className='relative flex flex-col sm:flex-row mt-7 w-full'>
+          {filteredItem.map(({ id, ...otherSectionProps }) => (
+            <MenuItem key={id} {...otherSectionProps} />
+          ))}
+        </div>
+      }
+    </div>
+  );
 };
 
 export default Directory;
